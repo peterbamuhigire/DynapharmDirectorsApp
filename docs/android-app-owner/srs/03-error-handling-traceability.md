@@ -229,7 +229,7 @@ Exceptions to retry:
 
 | Parameter | Value |
 |-----------|-------|
-| Minimum SDK | API 26 (Android 8.0 Oreo) |
+| Minimum SDK | API 29 (Android 10) |
 | Target SDK | API 31 (Android 12) |
 | Compile SDK | API 34 (Android 14) |
 | Kotlin JVM Target | 17 |

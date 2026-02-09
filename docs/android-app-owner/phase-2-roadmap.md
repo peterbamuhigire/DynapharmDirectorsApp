@@ -265,7 +265,7 @@ class SyncWorker(context: Context, params: WorkerParameters) :
 
 ### 7.3 Certificate Pinning
 
-- Production build pins the TLS certificate of `app.dynapharm-dms.com`
+- Production build pins the TLS certificate of `coulderp.dynapharmafrica.com`
 - Configured via `OkHttp.CertificatePinner` in NetworkModule
 - Pins rotated quarterly; new pins shipped via app update
 - Staging build uses separate pins; debug build disables pinning

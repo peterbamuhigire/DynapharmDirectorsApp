@@ -252,7 +252,7 @@ data class ProfileEntity(
 
 | Android Version | API Level | Support Level | Notes |
 |----------------|-----------|---------------|-------|
-| Android 8.0 Oreo | API 26 | Minimum SDK | Broadest reach with modern APIs |
+| Android 10 | API 29 | Minimum SDK | Broadest reach with modern APIs |
 | Android 9.0 Pie | API 28 | Supported | Biometric API available |
 | Android 10 | API 29 | Supported | Scoped storage |
 | Android 11 | API 30 | Supported | Enhanced permissions |
@@ -264,7 +264,7 @@ data class ProfileEntity(
 **Build Configuration:**
 
 ```
-minSdk = 26
+minSdk = 29
 targetSdk = 31
 compileSdk = 34
 ```

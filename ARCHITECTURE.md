@@ -976,8 +976,8 @@ val encryptedPrefs = EncryptedSharedPreferences.create(
 
 ```kotlin
 val certificatePinner = CertificatePinner.Builder()
-    .add("app.dynapharm-dms.com", "sha256/PRIMARY_PIN_HASH")
-    .add("app.dynapharm-dms.com", "sha256/BACKUP_PIN_HASH")
+    .add("coulderp.dynapharmafrica.com", "sha256/PRIMARY_PIN_HASH")
+    .add("coulderp.dynapharmafrica.com", "sha256/BACKUP_PIN_HASH")
     .build()
 
 val client = OkHttpClient.Builder()
@@ -1200,7 +1200,7 @@ This prevents double-approvals and maintains server as single source of truth.
 | Component | Technology | Version |
 |-----------|-----------|---------|
 | Language | Kotlin | 2.0.10 |
-| Min SDK | Android 8.0 (API 26) | 26 |
+| Min SDK | Android 10 (API 29) | 29 |
 | Target SDK | Android 14 (API 34) | 34 |
 | Build System | Gradle + Kotlin DSL | 8.5.1 |
 | Java Version | Java 17 | 17 |
@@ -1288,7 +1288,7 @@ This prevents double-approvals and maintains server as single source of truth.
 | **Version Name Suffix** | `-debug` | `-staging` | (none) |
 | **Minify Enabled** | false | true | true |
 | **Shrink Resources** | false | false | true |
-| **API Base URL** | `http://10.0.2.2/DMS_web/` | `https://staging.dynapharm-dms.com/` | `https://app.dynapharm-dms.com/` |
+| **API Base URL** | `http://dynapharm.peter/` | `https://erp.dynapharmafrica.com/` | `https://coulderp.dynapharmafrica.com/` |
 | **Logging Enabled** | true | true | false |
 | **Certificate Pins** | (empty) | staging pin | production pins |
 

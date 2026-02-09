@@ -137,7 +137,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dynapharm.owner"
-        minSdk = 26
+        minSdk = 29
         targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
@@ -155,20 +155,20 @@ android {
             dimension = "environment"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2/DMS_web/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://dynapharm.peter/\"")
             buildConfigField("String", "APP_NAME", "\"DynapharmOwner DEV\"")
         }
         create("staging") {
             dimension = "environment"
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-staging"
-            buildConfigField("String", "API_BASE_URL", "\"https://staging.dynapharm-dms.com/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://erp.dynapharmafrica.com/\"")
             buildConfigField("String", "APP_NAME", "\"DynapharmOwner STG\"")
             buildConfigField("String", "CERTIFICATE_PINS", "\"sha256/STAGING_PIN\"")
         }
         create("prod") {
             dimension = "environment"
-            buildConfigField("String", "API_BASE_URL", "\"https://app.dynapharm-dms.com/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://coulderp.dynapharmafrica.com/\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "false")
             buildConfigField("String", "CERTIFICATE_PINS", "\"sha256/PRIMARY;sha256/BACKUP\"")
         }

@@ -39,7 +39,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dynapharm.ownerhub"
-        minSdk = 26
+        minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
@@ -58,7 +58,7 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
 
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2/DMS_web/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://dynapharm.peter/\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "true")
             buildConfigField("String", "CERTIFICATE_PINS", "\"\"")
         }
@@ -74,7 +74,7 @@ android {
 
             buildConfigField(
                 "String", "API_BASE_URL",
-                "\"https://staging.dynapharm-dms.com/\""
+                "\"https://erp.dynapharmafrica.com/\""
             )
             buildConfigField("Boolean", "ENABLE_LOGGING", "true")
             buildConfigField(
@@ -93,7 +93,7 @@ android {
 
             buildConfigField(
                 "String", "API_BASE_URL",
-                "\"https://app.dynapharm-dms.com/\""
+                "\"https://coulderp.dynapharmafrica.com/\""
             )
             buildConfigField("Boolean", "ENABLE_LOGGING", "false")
             buildConfigField(
@@ -450,7 +450,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 | `versionNameSuffix` | `-debug` | `-staging` | (none) |
 | `isMinifyEnabled` | false | true | true |
 | `isShrinkResources` | false | false | true |
-| `API_BASE_URL` | `http://10.0.2.2/DMS_web/` | `https://staging.dynapharm-dms.com/` | `https://app.dynapharm-dms.com/` |
+| `API_BASE_URL` | `http://dynapharm.peter/` | `https://erp.dynapharmafrica.com/` | `https://coulderp.dynapharmafrica.com/` |
 | `ENABLE_LOGGING` | true | true | false |
 | `CERTIFICATE_PINS` | (empty) | staging pin | production pins |
 

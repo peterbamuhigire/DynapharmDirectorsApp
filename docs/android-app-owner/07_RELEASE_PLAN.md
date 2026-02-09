@@ -285,7 +285,7 @@ Secure -- Enterprise-grade JWT authentication, encrypted storage, and complete
 franchise data isolation.
 
 REQUIREMENTS: Active Dynapharm franchise owner account and internet for initial
-setup. Android 8.0+.
+setup. Android 10+.
 
 Take control of your franchise from anywhere. Download now!
 ```
@@ -373,7 +373,7 @@ implementation("com.google.android.play:app-update-ktx:2.1.0")
 - [ ] Offline mode tested (cached reports display with stale indicator)
 - [ ] All 5 languages tested for layout issues
 - [ ] RTL layout verified for Arabic
-- [ ] Tested on min SDK (API 26) and latest SDK (API 35+)
+- [ ] Tested on min SDK (API 29) and latest SDK (API 35+)
 - [ ] Multi-franchise switching tested (switch, verify data isolation)
 - [ ] All report types tested with live data
 - [ ] Approval workflow tested (approve and reject paths)

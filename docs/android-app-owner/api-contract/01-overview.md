@@ -13,9 +13,9 @@
 
 | Environment | Base URL | Notes |
 |-------------|----------|-------|
-| Development | `http://10.0.2.2/DMS_web/` | Android emulator -> localhost WAMP |
-| Staging | `https://staging.dynapharm-dms.com/` | QA and UAT |
-| Production | `https://app.dynapharm-dms.com/` | Live users |
+| Development | `http://dynapharm.peter/` | Android emulator -> localhost WAMP |
+| Staging | `https://erp.dynapharmafrica.com/` | QA and UAT |
+| Production | `https://coulderp.dynapharmafrica.com/` | Live users |
 
 All endpoint paths in this contract are relative to the base URL. Example:
 

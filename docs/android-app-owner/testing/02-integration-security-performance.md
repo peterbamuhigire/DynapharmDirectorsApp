@@ -308,9 +308,9 @@ class CertificatePinningTest {
     fun wrongCertificate_connectionFails() {
         val client = OkHttpClient.Builder().certificatePinner(
             CertificatePinner.Builder()
-                .add("app.dynapharm-dms.com", "sha256/WRONG_HASH_HERE").build()).build()
+                .add("coulderp.dynapharmafrica.com", "sha256/WRONG_HASH_HERE").build()).build()
         val request = Request.Builder()
-            .url("https://app.dynapharm-dms.com/api/owners/dashboard-stats.php").build()
+            .url("https://coulderp.dynapharmafrica.com/api/owners/dashboard-stats.php").build()
         assertThrows(SSLPeerUnverifiedException::class.java) { client.newCall(request).execute() }
     }
 }

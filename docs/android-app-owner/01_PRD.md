@@ -44,7 +44,7 @@ This PRD is split into three focused sub-files for maintainability.
 | Platform | Android (native) |
 | App Name | Dynapharm Owner Hub |
 | Package ID | `com.dynapharm.ownerhub` |
-| Min API Level | API 26 (Android 8.0) |
+| Min API Level | API 29 (Android 10) |
 | Language | Kotlin 2.0+ |
 | UI Framework | Jetpack Compose + Material 3 |
 | Backend | PHP 8.2+ / MySQL 9.1 / REST APIs |

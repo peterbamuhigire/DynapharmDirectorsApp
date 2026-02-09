@@ -63,7 +63,7 @@ The Dynapharm Owner Hub is a **read-heavy, write-light** native Android applicat
 
 | Target | Version | Rationale |
 |--------|---------|-----------|
-| **Minimum SDK** | API 26 (Android 8.0) | Covers 95%+ of active devices, modern crypto APIs |
+| **Minimum SDK** | API 29 (Android 10) | Covers 95%+ of active devices, modern crypto APIs |
 | **Target SDK** | API 34 (Android 14) | Latest stable API, Google Play requirement |
 | **Compile SDK** | API 34 | Matches target SDK for consistency |
 
@@ -435,7 +435,7 @@ viewModelScope.launch {
         </trust-anchors>
     </base-config>
     <domain-config>
-        <domain includeSubdomains="true">app.dynapharm-dms.com</domain>
+        <domain includeSubdomains="true">coulderp.dynapharmafrica.com</domain>
         <pin-set>
             <pin digest="SHA-256">PRIMARY_PIN_HASH</pin>
             <pin digest="SHA-256">BACKUP_PIN_HASH</pin>
@@ -548,7 +548,7 @@ AsyncImage(
 
 ### Date/Time Formatting
 
-- `java.time.LocalDate`, `java.time.LocalDateTime` (API 26+)
+- `java.time.LocalDate`, `java.time.LocalDateTime` (API 29+)
 - Custom formatters for report date ranges
 
 ---
@@ -688,9 +688,9 @@ AsyncImage(
 
 | Environment | URL |
 |-------------|-----|
-| **Development** | `http://10.0.2.2/DMS_web/` (Android emulator localhost) |
-| **Staging** | `https://staging.dynapharm-dms.com/` |
-| **Production** | `https://app.dynapharm-dms.com/` |
+| **Development** | `http://dynapharm.peter/` (Android emulator localhost) |
+| **Staging** | `https://erp.dynapharmafrica.com/` |
+| **Production** | `https://coulderp.dynapharmafrica.com/` |
 
 ### API Endpoints
 
@@ -879,9 +879,9 @@ PR Opened / Push to main
 
 | Variant | Application ID | API URL | Minify | Cert Pinning | Logging |
 |---------|---------------|---------|--------|--------------|---------|
-| **debug** | `com.dynapharm.ownerhub.debug` | `http://10.0.2.2/DMS_web/` | No | No | Full |
-| **staging** | `com.dynapharm.ownerhub.staging` | `https://staging.dynapharm-dms.com/` | Yes | Staging pin | Full |
-| **release** | `com.dynapharm.ownerhub` | `https://app.dynapharm-dms.com/` | Yes | Prod pins | Errors only |
+| **debug** | `com.dynapharm.ownerhub.debug` | `http://dynapharm.peter/` | No | No | Full |
+| **staging** | `com.dynapharm.ownerhub.staging` | `https://erp.dynapharmafrica.com/` | Yes | Staging pin | Full |
+| **release** | `com.dynapharm.ownerhub` | `https://coulderp.dynapharmafrica.com/` | Yes | Prod pins | Errors only |
 
 ---
 

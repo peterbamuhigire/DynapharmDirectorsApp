@@ -58,8 +58,8 @@ Status: Planning complete. Development follows the Phase 1 Bootstrap Pattern.
 |-------|-------|
 | Product | DMS_web -- Dynapharm Distributor Management System |
 | Backend Stack | PHP 8.2+ / MySQL 9.1 |
-| API Base URL (Dev) | `http://10.0.2.2/DMS_web/` |
-| API Base URL (Prod) | `https://app.dynapharm-dms.com/` |
+| API Base URL (Dev) | `http://dynapharm.peter/` |
+| API Base URL (Prod) | `https://coulderp.dynapharmafrica.com/` |
 | Auth Model | JWT (Access 15 min + Refresh 30 days) |
 | Multi-tenancy | `franchise_id` in JWT payload, every query scoped |
 | Web Owner Panel | `ownerpanel/` (28 pages, 9 API endpoints in `api/owners/`) |

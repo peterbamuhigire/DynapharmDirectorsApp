@@ -126,7 +126,7 @@ Native Android app with:
 
 - **Google Play Store**: Developer account, signing keys, privacy policy
 - **Firebase**: Analytics, Crashlytics, Cloud Messaging (Phase 3)
-- **Android ecosystem**: Requires Android 8.0+ devices
+- **Android ecosystem**: Requires Android 10+ devices
 
 ---
 

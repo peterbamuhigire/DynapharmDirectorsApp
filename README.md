@@ -6,7 +6,7 @@
 
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
 [![Language](https://img.shields.io/badge/Kotlin-2.0%2B-blue.svg)](https://kotlinlang.org)
-[![Min SDK](https://img.shields.io/badge/Min%20SDK-26-orange.svg)](https://developer.android.com/studio/releases/platforms#8.0)
+[![Min SDK](https://img.shields.io/badge/Min%20SDK-29-orange.svg)](https://developer.android.com/studio/releases/platforms#10)
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
 ---
@@ -17,7 +17,7 @@
 
 - **Android Studio**: Ladybug 2024.2.1 or later
 - **JDK**: 17 or later
-- **Android SDK**: API 26 (Android 8.0) minimum, API 35+ recommended
+- **Android SDK**: API 29 (Android 10) minimum, API 35+ recommended
 - **Kotlin**: 2.0+
 - **Backend Access**: DMS_web API endpoints (`api/owners/`)
 
@@ -141,8 +141,8 @@ See [TECH_STACK.md](TECH_STACK.md) for detailed version matrix and rationale.
 |-------|-------|
 | Product | DMS_web (Dynapharm Distributor Management System) |
 | Backend Stack | PHP 8.2+ / MySQL 9.1 |
-| API Base (Dev) | `http://10.0.2.2/DMS_web/` |
-| API Base (Prod) | `https://app.dynapharm-dms.com/` |
+| API Base (Dev) | `http://dynapharm.peter/` |
+| API Base (Prod) | `https://coulderp.dynapharmafrica.com/` |
 | Auth | JWT (Access 15 min + Refresh 30 days) |
 | Multi-tenancy | `franchise_id` in JWT, every query scoped |
 | Existing Endpoints | 9 in `api/owners/` |
@@ -265,7 +265,7 @@ Unauthorized copying, modification, distribution, or use is strictly prohibited.
 ## Links
 
 - [DMS_web Backend Repo](https://github.com/dynapharm/dms-web) (internal)
-- [Owner Web Portal](https://app.dynapharm-dms.com/ownerpanel/)
+- [Owner Web Portal](https://coulderp.dynapharmafrica.com/ownerpanel/)
 - [Distributor Android App](https://github.com/dynapharm/distributor-android-app) (internal)
 - [API Documentation](docs/API.md)
 

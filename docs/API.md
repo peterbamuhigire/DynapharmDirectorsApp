@@ -36,9 +36,9 @@ For comprehensive API specifications, see `docs/android-app-owner/04_API_CONTRAC
 
 | Environment | Base URL | Build Variant | Usage |
 |-------------|----------|---------------|-------|
-| Development | `http://10.0.2.2/DMS_web/` | `debug` | Local WAMP server via emulator |
-| Staging | `https://staging.dynapharm-dms.com/` | `staging` | QA and UAT testing |
-| Production | `https://app.dynapharm-dms.com/` | `release` | Live production users |
+| Development | `http://dynapharm.peter/` | `debug` | Local WAMP server via emulator |
+| Staging | `https://erp.dynapharmafrica.com/` | `staging` | QA and UAT testing |
+| Production | `https://coulderp.dynapharmafrica.com/` | `release` | Live production users |
 
 ### Gradle Configuration
 
@@ -47,17 +47,17 @@ For comprehensive API specifications, see `docs/android-app-owner/04_API_CONTRAC
 android {
     buildTypes {
         debug {
-            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2/DMS_web/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://dynapharm.peter/\"")
             buildConfigField("boolean", "ENABLE_LOGGING", "true")
             buildConfigField("String", "CERTIFICATE_PINS", "\"\"")
         }
         create("staging") {
-            buildConfigField("String", "API_BASE_URL", "\"https://staging.dynapharm-dms.com/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://erp.dynapharmafrica.com/\"")
             buildConfigField("boolean", "ENABLE_LOGGING", "true")
             buildConfigField("String", "CERTIFICATE_PINS", "\"sha256/STAGING_PIN_HASH\"")
         }
         release {
-            buildConfigField("String", "API_BASE_URL", "\"https://app.dynapharm-dms.com/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://coulderp.dynapharmafrica.com/\"")
             buildConfigField("boolean", "ENABLE_LOGGING", "false")
             buildConfigField("String", "CERTIFICATE_PINS", "\"sha256/PRIMARY_PIN;sha256/BACKUP_PIN\"")
         }

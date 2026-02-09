@@ -73,7 +73,7 @@ object NetworkModule {
         val pinBuilder = CertificatePinner.Builder()
         val pins = BuildConfig.CERTIFICATE_PINS
         if (pins.isNotBlank()) {
-            pins.split(";").forEach { pinBuilder.add("app.dynapharm-dms.com", it.trim()) }
+            pins.split(";").forEach { pinBuilder.add("coulderp.dynapharmafrica.com", it.trim()) }
         }
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
@@ -412,7 +412,7 @@ suspend fun <T> safeApiCall(apiCall: suspend () -> ApiResponse<T>): Result<T> =
 
 | Field | Debug | Staging | Release |
 |-------|-------|---------|---------|
-| `API_BASE_URL` | `http://10.0.2.2/DMS_web/` | `https://staging.dynapharm-dms.com/` | `https://app.dynapharm-dms.com/` |
+| `API_BASE_URL` | `http://dynapharm.peter/` | `https://erp.dynapharmafrica.com/` | `https://coulderp.dynapharmafrica.com/` |
 | `ENABLE_LOGGING` | `true` | `true` | `false` |
 | `CERTIFICATE_PINS` | `""` | staging pin | production pins |
 

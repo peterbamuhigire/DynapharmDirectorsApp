@@ -31,9 +31,9 @@ This document provides AI development patterns and instructions for Claude Code 
 - Testing: JUnit 5 + MockK + Turbine + Compose UI Test
 
 ### Build Variants
-- `debug`: Local dev with emulator (http://10.0.2.2/DMS_web/)
-- `staging`: Pre-production (https://staging.dynapharm-dms.com/)
-- `release`: Production (https://app.dynapharm-dms.com/)
+- `debug`: Local dev with emulator (http://dynapharm.peter/)
+- `staging`: Pre-production (https://erp.dynapharmafrica.com/)
+- `release`: Production (https://coulderp.dynapharmafrica.com/)
 
 ---
 

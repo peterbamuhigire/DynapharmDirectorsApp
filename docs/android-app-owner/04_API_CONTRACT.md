@@ -43,9 +43,9 @@ This API Contract is split into six focused sub-files for maintainability.
 
 | Environment | Base URL | Usage |
 |-------------|---------|-------|
-| Development | `http://10.0.2.2/DMS_web/` | Android emulator -> localhost |
-| Staging | `https://staging.dynapharm-dms.com/` | QA and UAT testing |
-| Production | `https://app.dynapharm-dms.com/` | Live users |
+| Development | `http://dynapharm.peter/` | Android emulator -> localhost |
+| Staging | `https://erp.dynapharmafrica.com/` | QA and UAT testing |
+| Production | `https://coulderp.dynapharmafrica.com/` | Live users |
 
 All endpoints are relative to the base URL. Example: `{base_url}api/owners/dashboard-stats.php`
 

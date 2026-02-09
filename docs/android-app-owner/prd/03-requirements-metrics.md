@@ -164,7 +164,7 @@ Long-tail: `franchise owner mobile dashboard`, `MLM franchise reports`, `multi-f
 1. **Android-only.** Phase 1 targets Android. iOS may be considered in Phase 2 using KMP (Kotlin Multiplatform).
 2. **No data creation on mobile.** Owners cannot create expenses, POs, invoices, or distributors. Creation stays on the web portal for staff.
 3. **APK size under 30 MB.** Smaller than the distributor app target (50 MB) because the owner app has no offline product catalog or image-heavy features.
-4. **Minimum Android 8.0 (API 26).** Covers 95%+ of active Android devices in target African markets.
+4. **Minimum Android 10 (API 29).** Covers 95%+ of active Android devices in target African markets.
 5. **Backend remains PHP/MySQL.** No backend rewrite; mobile app adapts to existing architecture with new JWT-secured endpoints.
 6. **No real-time data streaming.** Reports show point-in-time data; no WebSocket or SSE for live updates. Pull-to-refresh for latest data.
 7. **Report APIs paginate at 50 rows.** To maintain 3G performance, no report API returns more than 50 rows per page.

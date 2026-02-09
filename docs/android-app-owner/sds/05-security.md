@@ -176,8 +176,8 @@ val encryptedPrefs = EncryptedSharedPreferences.create(
 
 ```kotlin
 val certificatePinner = CertificatePinner.Builder()
-    .add("app.dynapharm-dms.com", "sha256/PRIMARY_PIN_HASH_HERE")
-    .add("app.dynapharm-dms.com", "sha256/BACKUP_PIN_HASH_HERE")
+    .add("coulderp.dynapharmafrica.com", "sha256/PRIMARY_PIN_HASH_HERE")
+    .add("coulderp.dynapharmafrica.com", "sha256/BACKUP_PIN_HASH_HERE")
     .build()
 
 val client = OkHttpClient.Builder()
@@ -203,7 +203,7 @@ val client = OkHttpClient.Builder()
 
     <!-- Production: HTTPS only with certificate pinning -->
     <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">app.dynapharm-dms.com</domain>
+        <domain includeSubdomains="true">coulderp.dynapharmafrica.com</domain>
         <pin-set expiration="2027-06-01">
             <pin digest="SHA-256">PRIMARY_PIN_BASE64_HERE</pin>
             <pin digest="SHA-256">BACKUP_PIN_BASE64_HERE</pin>
@@ -212,7 +212,7 @@ val client = OkHttpClient.Builder()
 
     <!-- Staging: HTTPS only, separate pins -->
     <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">staging.dynapharm-dms.com</domain>
+        <domain includeSubdomains="true">erp.dynapharmafrica.com</domain>
         <pin-set expiration="2027-06-01">
             <pin digest="SHA-256">STAGING_PIN_BASE64_HERE</pin>
         </pin-set>

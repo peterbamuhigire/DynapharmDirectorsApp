@@ -4,7 +4,7 @@
 
 **Package:** `com.dynapharm.owner`
 **App Name:** DynapharmOwner
-**Min SDK:** 26 | **Target SDK:** 35 | **Compile SDK:** 35
+**Min SDK:** 29 | **Target SDK:** 35 | **Compile SDK:** 35
 
 ---
 
@@ -49,7 +49,7 @@ Every variant exposes these fields via `BuildConfig`:
 Access in Kotlin:
 
 ```kotlin
-val baseUrl = BuildConfig.API_BASE_URL   // "https://app.dynapharm-dms.com/"
+val baseUrl = BuildConfig.API_BASE_URL   // "https://coulderp.dynapharmafrica.com/"
 val logging = BuildConfig.ENABLE_LOGGING // false in prod release
 ```
 
@@ -68,7 +68,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dynapharm.owner"
-        minSdk = 26
+        minSdk = 29
         targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
@@ -114,7 +114,7 @@ android {
 
             buildConfigField(
                 "String", "API_BASE_URL",
-                "\"http://10.0.2.2/DMS_web/\""
+                "\"http://dynapharm.peter/\""
             )
             buildConfigField("String", "APP_NAME", "\"DynapharmOwner DEV\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "true")
@@ -131,7 +131,7 @@ android {
 
             buildConfigField(
                 "String", "API_BASE_URL",
-                "\"https://staging.dynapharm-dms.com/\""
+                "\"https://erp.dynapharmafrica.com/\""
             )
             buildConfigField("String", "APP_NAME", "\"DynapharmOwner STG\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "true")
@@ -149,7 +149,7 @@ android {
 
             buildConfigField(
                 "String", "API_BASE_URL",
-                "\"https://app.dynapharm-dms.com/\""
+                "\"https://coulderp.dynapharmafrica.com/\""
             )
             buildConfigField("String", "APP_NAME", "\"DynapharmOwner\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "false")
@@ -374,7 +374,7 @@ Example `app/src/dev/res/values/strings.xml`:
 |----------|-----|---------|------|
 | `applicationIdSuffix` | `.dev` | `.staging` | (none) |
 | `versionNameSuffix` | `-dev` | `-staging` | (none) |
-| `API_BASE_URL` | `http://10.0.2.2/DMS_web/` | `https://staging...` | `https://app...` |
+| `API_BASE_URL` | `http://dynapharm.peter/` | `https://erp.dynapharmafrica.com/` | `https://coulderp.dynapharmafrica.com/` |
 | `APP_NAME` | `DynapharmOwner DEV` | `DynapharmOwner STG` | `DynapharmOwner` |
 | `ENABLE_LOGGING` | `true` | `true` | `false` |
 | `CERTIFICATE_PINS` | (empty) | staging pin | prod pins |

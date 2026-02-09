@@ -98,7 +98,7 @@ object NetworkModule {
         val builder = CertificatePinner.Builder()
         val pins = BuildConfig.CERTIFICATE_PINS
         if (pins.isNotBlank()) {
-            pins.split(";").forEach { builder.add("app.dynapharm-dms.com", it.trim()) }
+            pins.split(";").forEach { builder.add("coulderp.dynapharmafrica.com", it.trim()) }
         }
         return builder.build()
     }
