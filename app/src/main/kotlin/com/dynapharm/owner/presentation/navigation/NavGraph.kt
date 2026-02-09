@@ -18,7 +18,7 @@ import com.dynapharm.owner.presentation.screens.home.HomeScreen
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Login.route
+    startDestination: String = Screen.Dashboard.route // Changed to bypass login for testing
 ) {
     NavHost(
         navController = navController,
