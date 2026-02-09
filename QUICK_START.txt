@@ -1,0 +1,110 @@
+═══════════════════════════════════════════════════════════
+   DYNAPHARM OWNER HUB - QUICK START GUIDE
+═══════════════════════════════════════════════════════════
+
+📱 FASTEST WAY TO TEST THE UI (No Backend Needed)
+═══════════════════════════════════════════════════════════
+
+STEP 1: Open in Android Studio
+-------------------------------
+File > Open > C:\Users\Peter\StudioProjects\DynapharmDirectorsApp
+Wait for Gradle sync (5-10 min first time)
+
+STEP 2: Skip Login (Go Straight to Dashboard)
+----------------------------------------------
+Edit this file:
+  app/src/main/kotlin/com/dynapharm/owner/presentation/navigation/NavGraph.kt
+
+Find line 15:
+  startDestination = Screen.Login.route
+
+Change to:
+  startDestination = Screen.Dashboard.route
+
+Save file (Ctrl+S)
+
+STEP 3: Select Build Variant
+-----------------------------
+Bottom-left corner: Build Variants > Select "devDebug"
+
+STEP 4: Run on Emulator
+------------------------
+Click green Run button (or Shift+F10)
+Wait for emulator to start
+App launches directly to Dashboard!
+
+STEP 5: Test Features
+----------------------
+✓ See 5 KPI cards with sample data
+✓ Pull down to refresh
+✓ Click bottom tabs (Reports, Finance, Approvals)
+✓ See "Coming Soon" placeholders
+✓ Click Dashboard tab to return
+
+═══════════════════════════════════════════════════════════
+
+🎯 WHAT YOU'LL SEE
+═══════════════════════════════════════════════════════════
+
+Dashboard Screen:
+  📊 Sales MTD: $1,250,000.50 ↑
+  💵 Cash Balance: $450,000.00 ↓
+  📦 Inventory: $2,300,000.00 ↑
+  📈 Total BV: 15,000 →
+  ✅ Approvals: 7 ↑
+
+Bottom Tabs:
+  🏠 Dashboard (working)
+  📋 Reports (coming soon)
+  💼 Finance (coming soon)
+  ✓ Approvals (coming soon)
+
+═══════════════════════════════════════════════════════════
+
+⚠️  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════
+
+Gradle sync fails?
+→ File > Invalidate Caches > Invalidate and Restart
+
+App crashes?
+→ View > Tool Windows > Logcat (check red errors)
+→ Build > Clean Project > Rebuild Project
+
+Emulator won't start?
+→ Close Android Studio
+→ Task Manager > End "qemu" processes
+→ Restart Android Studio
+
+Can't find NavGraph.kt?
+→ Navigate in Project panel:
+   app > src > main > kotlin > com > dynapharm > owner >
+   presentation > navigation > NavGraph.kt
+
+═══════════════════════════════════════════════════════════
+
+📖 MORE DETAILS
+═══════════════════════════════════════════════════════════
+
+Full testing guide: TESTING_GUIDE.md
+Complete docs: docs/plans/sections-1-6-completion.md
+
+═══════════════════════════════════════════════════════════
+
+✅ CHECKLIST
+═══════════════════════════════════════════════════════════
+
+[ ] Android Studio opened
+[ ] Project opened
+[ ] Gradle synced
+[ ] NavGraph.kt modified (skip login)
+[ ] Build variant = devDebug
+[ ] Emulator started
+[ ] App running
+[ ] Dashboard showing
+[ ] Bottom tabs working
+
+═══════════════════════════════════════════════════════════
+
+🎉 SUCCESS = Dashboard displaying with 5 KPI cards!
+═══════════════════════════════════════════════════════════

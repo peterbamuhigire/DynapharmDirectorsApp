@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DynapharmOwner</string>
+
+    <!-- Common strings shared across all flavors -->
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Tabs -->
+    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_reports">Reports</string>
+    <string name="tab_approvals">Approvals</string>
+    <string name="tab_franchises">Franchises</string>
+    <string name="tab_more">More</string>
+
+    <!-- Coming Soon -->
+    <string name="coming_soon">Coming Soon</string>
+    <string name="feature_under_development">This feature is under development and will be available in a future release.</string>
+</resources>
