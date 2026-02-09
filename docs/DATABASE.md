@@ -1,7 +1,7 @@
 # Room Database Documentation - Dynapharm Owner Hub
 
-**Version:** 1.0
-**Last Updated:** 2026-02-09
+**Version:** 1.1
+**Last Updated:** 2026-02-10
 **Database Name:** `dynapharm_owner.db`
 **App:** Dynapharm Owner Hub (Android)
 
@@ -12,6 +12,8 @@
 This document provides a comprehensive guide to the Room database implementation for the Dynapharm Owner Hub. It covers the schema, entity definitions, DAO interfaces, caching strategies, migration patterns, and query examples.
 
 For detailed implementation specs, see `docs/android-app-owner/phase-1/07-room-database.md`.
+
+**Backend Schema Note:** The backend `tbl_users.franchise_id` column now allows NULL values for `super_admin` and `owner` user types, enabling multi-franchise access. Android app handles this through the `FranchiseManager` which dynamically sets franchise context per session.
 
 ---
 

@@ -18,7 +18,7 @@ import com.dynapharm.owner.presentation.screens.home.HomeScreen
 @Composable
 fun NavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Dashboard.route // Changed to bypass login for testing
+    startDestination: String = Screen.Login.route
 ) {
     NavHost(
         navController = navController,
@@ -42,7 +42,17 @@ fun NavGraph(
 
         // Home screen - contains bottom navigation and all main app screens
         composable(Screen.Dashboard.route) {
-            HomeScreen()
+            HomeScreen(
+                onLogout = {
+                    // Navigate back to login and clear the back stack
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
 
         // Note: Reports, Finance, and Approvals are handled within HomeScreen

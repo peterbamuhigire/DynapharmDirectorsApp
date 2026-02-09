@@ -154,19 +154,30 @@ See [docs/android-app-owner/04_API_CONTRACT.md](docs/android-app-owner/04_API_CO
 
 ## Development Phases
 
-### Phase 1: Foundation (Current)
+### Phase 1: Foundation (In Progress)
 
-**Status**: Not Started
+**Status**: Authentication ✓ | Dashboard UI ✓ | Real Data Integration (Next)
 
-**Deliverables**:
-- JWT authentication (login, token refresh, logout)
-- Executive dashboard (5 KPIs with offline caching)
-- 5-tab bottom navigation (Dashboard, Reports*, Approvals*, Franchises*, More)
-- Material 3 theme and reusable UI components
-- Room database setup for caching
-- 47+ unit tests across all layers
+**Completed (2026-02-10)**:
+- ✅ JWT authentication (username/email login, token refresh, logout)
+- ✅ Login screen with Material 3 error dialogs (SweetAlert-style)
+- ✅ Logout button in TopAppBar (always visible)
+- ✅ Executive dashboard UI (5 KPIs with placeholder data)
+- ✅ 4-tab bottom navigation (Dashboard, Reports*, Finance*, Approvals*)
+- ✅ Material 3 theme and reusable UI components
+- ✅ Room database setup for caching
+- ✅ Backend schema updated (franchise_id nullable for owners/super_admins)
 
-*Tabs show "Coming Soon" placeholder in Phase 1
+**In Progress**:
+- 🔄 Dashboard real data integration (connect to backend API)
+- 🔄 Franchise switching UI (banner + selector dialog)
+
+**Next Up**:
+- Profile screen
+- Reports tab implementation
+- Approvals tab implementation
+
+*Tabs show "Coming Soon" placeholder until implemented
 
 **Plan**: [docs/android-app-owner/phase-1/README.md](docs/android-app-owner/phase-1/README.md)
 

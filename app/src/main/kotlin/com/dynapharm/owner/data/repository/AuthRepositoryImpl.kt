@@ -1,5 +1,6 @@
 package com.dynapharm.owner.data.repository
 
+import com.dynapharm.owner.data.local.prefs.FranchiseManager
 import com.dynapharm.owner.data.local.prefs.TokenManager
 import com.dynapharm.owner.data.remote.api.AuthApiService
 import com.dynapharm.owner.data.remote.dto.LoginRequestDto
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authApiService: AuthApiService,
     private val tokenManager: TokenManager,
+    private val franchiseManager: FranchiseManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AuthRepository {
 
@@ -43,6 +45,14 @@ class AuthRepositoryImpl @Inject constructor(
                     currentUser = data.user.toDomain()
                     userFranchises = data.franchises.map { it.toDomain() }
 
+                    // Save franchises to FranchiseManager for offline access
+                    franchiseManager.saveAllFranchises(userFranchises)
+
+                    // Auto-select if single franchise
+                    if (userFranchises.size == 1) {
+                        franchiseManager.setActiveFranchise(userFranchises.first())
+                    }
+
                     Result.Success(
                         LoginResponse(
                             accessToken = data.accessToken,
@@ -53,13 +63,28 @@ class AuthRepositoryImpl @Inject constructor(
                         )
                     )
                 } else {
+                    // API returned success=false or error
+                    val errorMsg = response.error?.message ?: "Login failed"
+                    val errorCode = response.error?.code ?: "UNKNOWN_ERROR"
                     Result.Error(
-                        Exception(response.error?.message ?: "Login failed"),
-                        response.error?.message
+                        Exception("[$errorCode] $errorMsg"),
+                        "$errorMsg"
                     )
                 }
+            } catch (e: retrofit2.HttpException) {
+                // HTTP error (401, 404, 500, etc.)
+                val code = e.code()
+                val errorBody = e.response()?.errorBody()?.string()
+                Result.Error(
+                    e,
+                    "HTTP $code: ${e.message()}\nResponse: ${errorBody?.take(200)}"
+                )
+            } catch (e: java.net.UnknownHostException) {
+                Result.Error(e, "Cannot reach server. Check your internet connection.")
+            } catch (e: java.net.SocketTimeoutException) {
+                Result.Error(e, "Connection timeout. Server took too long to respond.")
             } catch (e: Exception) {
-                Result.Error(e, "Login failed: ${e.message}")
+                Result.Error(e, "Login error: ${e.javaClass.simpleName} - ${e.message}")
             }
         }
 
@@ -78,6 +103,7 @@ class AuthRepositoryImpl @Inject constructor(
 
             // Clear local data
             tokenManager.clearTokens()
+            franchiseManager.clearAll()
             currentUser = null
             userFranchises = emptyList()
 
@@ -119,11 +145,13 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCurrentUser(): User? = withContext(ioDispatcher) {
-        currentUser
+    override suspend fun getCurrentUser(): User? {
+        // No need for withContext - just returning cached value
+        return currentUser
     }
 
-    override suspend fun getUserFranchises(): List<Franchise> = withContext(ioDispatcher) {
-        userFranchises
+    override suspend fun getUserFranchises(): List<Franchise> {
+        // No need for withContext - just returning cached list
+        return userFranchises
     }
 }

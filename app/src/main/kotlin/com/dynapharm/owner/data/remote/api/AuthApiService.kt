@@ -16,10 +16,11 @@ interface AuthApiService {
 
     /**
      * Authenticates an owner user with username and password.
+     * Shared endpoint with distributor app - role claim distinguishes access.
      * @param request LoginRequestDto containing username and password
      * @return ApiResponse with LoginResponseDto containing tokens and user info
      */
-    @POST("api/auth/owner-mobile-login.php")
+    @POST("api/auth/mobile-login.php")
     suspend fun login(@Body request: LoginRequestDto): ApiResponse<LoginResponseDto>
 
     /**
@@ -35,6 +36,6 @@ interface AuthApiService {
      * @param request Map containing "refresh_token" key
      * @return ApiResponse with Unit (no data expected)
      */
-    @DELETE("api/auth/mobile-logout.php")
+    @POST("api/auth/logout.php")
     suspend fun logout(@Body request: Map<String, String>): ApiResponse<Unit>
 }

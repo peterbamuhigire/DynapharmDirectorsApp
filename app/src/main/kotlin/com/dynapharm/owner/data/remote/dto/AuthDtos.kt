@@ -5,23 +5,22 @@ import kotlinx.serialization.Serializable
 
 /**
  * Request DTO for owner login.
+ * Accepts either email or username for backward compatibility.
  */
 @Serializable
 data class LoginRequestDto(
-    @SerialName("username")
-    val username: String,
+    @SerialName("email")
+    val username: String,  // Field name is username in code, but serialized as email for API
     @SerialName("password")
     val password: String
 )
 
 /**
- * Response DTO for successful login.
+ * Response DTO for successful login (data payload).
  * Contains user information, tokens, and associated franchises.
  */
 @Serializable
 data class LoginResponseDto(
-    @SerialName("success")
-    val success: Boolean,
     @SerialName("access_token")
     val accessToken: String,
     @SerialName("refresh_token")

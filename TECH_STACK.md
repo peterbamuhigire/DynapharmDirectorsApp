@@ -113,16 +113,37 @@ freeCompilerArgs:
 
 ### Jetpack Compose
 
-**Version:** BOM 2024.06.00 (ties all Compose library versions)
+**Version:** BOM 2024.12.01 (ties all Compose library versions)
 
-| Library | Purpose |
-|---------|---------|
-| `androidx.compose.ui` | Core UI primitives |
-| `androidx.compose.ui.graphics` | Graphics and drawing |
-| `androidx.compose.ui.tooling` | Preview and debug tools (debug only) |
-| `androidx.compose.ui.tooling.preview` | @Preview annotations |
-| `androidx.compose.material3` | Material 3 design components |
-| `androidx.compose.material:material-icons-extended` | Extended icon set |
+| Library | Version | Purpose |
+|---------|---------|---------|
+| `androidx.compose.ui` | 1.7.6 | Core UI primitives |
+| `androidx.compose.ui.graphics` | 1.7.6 | Graphics and drawing |
+| `androidx.compose.ui.tooling` | 1.7.6 | Preview and debug tools (debug only) |
+| `androidx.compose.ui.tooling.preview` | 1.7.6 | @Preview annotations |
+| `androidx.compose.material3` | 1.3.x | Material 3 design components |
+| `androidx.compose.material` | 1.7.6 | Material 2 (pull-refresh only) |
+| `androidx.compose.material:material-icons-extended` | 1.7.6 | Extended icon set (5,000+ icons) |
+
+**Material 3 Design System:**
+- **Theme:** Custom Material 3 theme with brand colors
+- **Components:** Cards, Buttons, TextFields, Dialogs, BottomSheets, etc.
+- **Color Scheme:** Uses `MaterialTheme.colorScheme.*` (NOT Material 2's `colors`)
+- **Typography:** Material 3 type scale (displayLarge → labelSmall)
+- **Shape:** Rounded corner system with consistent radii
+
+**Material 3 API Compatibility Notes:**
+- **ExposedDropdownMenuBox:** Uses `.menuAnchor()` without parameters (MenuAnchorType removed in M3 1.3.x)
+- **Colors:** Use `containerColor` and `contentColor` (not `backgroundColor`)
+- **Icons:** Only use confirmed icons from `Icons.Default.*` (see CLAUDE.md)
+- **AlertDialog:** Text composables for title/text, not strings
+
+**Confirmed Working Icons:**
+```kotlin
+Icons.Default.Store, Icons.Default.Check, Icons.Default.SwapHoriz,
+Icons.Default.Visibility, Icons.Default.VisibilityOff,
+Icons.Default.AccountBalance, Icons.Default.Assessment, Icons.Default.CheckCircle
+```
 
 **Key Features:**
 - Declarative UI (UI = f(state))
@@ -130,8 +151,9 @@ freeCompilerArgs:
 - Built-in state management
 - Recomposition optimization (strong skipping mode enabled)
 - Material 3 theming (dynamic colors, accessibility)
+- Type-safe navigation with Compose Navigation
 
-**Rationale:** Modern Android standard, less boilerplate than XML, better performance through smart recomposition, easier testing with semantics tree.
+**Rationale:** Modern Android standard, less boilerplate than XML, better performance through smart recomposition, easier testing with semantics tree, Material 3 provides consistent modern design language.
 
 ---
 

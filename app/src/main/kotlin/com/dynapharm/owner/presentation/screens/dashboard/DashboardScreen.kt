@@ -11,6 +11,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dynapharm.owner.domain.model.DashboardStats
+import com.dynapharm.owner.domain.model.Franchise
 import com.dynapharm.owner.domain.model.Trend
 import com.dynapharm.owner.presentation.common.*
 import com.dynapharm.owner.presentation.theme.OwnerHubTheme
@@ -36,6 +40,8 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val activeFranchise by viewModel.activeFranchise.collectAsState()
+    var showFranchiseSelector by remember { mutableStateOf(false) }
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = uiState.isRefreshing,
@@ -79,6 +85,8 @@ fun DashboardScreen(
                     stats = uiState.stats!!,
                     isStale = uiState.isStale,
                     lastUpdated = uiState.lastUpdatedTimestamp,
+                    activeFranchise = activeFranchise,
+                    onChangeFranchise = { showFranchiseSelector = true },
                     onRefresh = { viewModel.refresh() }
                 )
             }
@@ -91,6 +99,43 @@ fun DashboardScreen(
             modifier = Modifier.align(Alignment.TopCenter)
         )
     }
+
+    // Franchise selector dialog
+    if (showFranchiseSelector) {
+        val franchises = viewModel.getAllFranchises()
+
+        AlertDialog(
+            onDismissRequest = { showFranchiseSelector = false },
+            title = { Text("Switch Franchise") },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = "Select a franchise to view its data",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    FranchiseSelector(
+                        franchises = franchises,
+                        selectedFranchise = activeFranchise,
+                        onFranchiseSelected = { franchise ->
+                            viewModel.setActiveFranchise(franchise)
+                            showFranchiseSelector = false
+                        }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showFranchiseSelector = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 }
 
 /**
@@ -101,6 +146,8 @@ private fun DashboardContent(
     stats: DashboardStats,
     isStale: Boolean,
     lastUpdated: Long?,
+    activeFranchise: com.dynapharm.owner.domain.model.Franchise?,
+    onChangeFranchise: () -> Unit,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -118,6 +165,14 @@ private fun DashboardContent(
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
+
+        // Active Franchise Banner
+        if (activeFranchise != null) {
+            ActiveFranchiseBanner(
+                franchise = activeFranchise,
+                onChangeFranchise = onChangeFranchise
+            )
+        }
 
         // Stale data banner
         if (isStale) {
@@ -249,6 +304,8 @@ private fun DashboardContentPreview() {
                 approvalsTrend = Trend.NEUTRAL,
                 lastUpdated = System.currentTimeMillis() - (30 * 60 * 1000) // 30 min ago
             ),
+            activeFranchise = Franchise(id = 1, name = "Kampala Central", branchCount = 3),
+            onChangeFranchise = {},
             isStale = false,
             lastUpdated = System.currentTimeMillis() - (30 * 60 * 1000),
             onRefresh = {}
@@ -274,6 +331,8 @@ private fun DashboardContentStalePreview() {
                 approvalsTrend = Trend.NEUTRAL,
                 lastUpdated = System.currentTimeMillis() - (8 * 60 * 60 * 1000) // 8 hours ago
             ),
+            activeFranchise = Franchise(id = 1, name = "Kampala Central", branchCount = 3),
+            onChangeFranchise = {},
             isStale = true,
             lastUpdated = System.currentTimeMillis() - (8 * 60 * 60 * 1000),
             onRefresh = {}

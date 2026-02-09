@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Inbox
-import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -63,13 +63,13 @@ fun EmptyState(
     description: String? = null
 ) {
     val displayIcon = icon ?: when (emptyStateType) {
-        EmptyStateType.NO_DATA -> Icons.Default.Inbox
+        EmptyStateType.NO_DATA -> Icons.Default.FolderOpen
         EmptyStateType.NO_RESULTS -> Icons.Default.Search
-        EmptyStateType.NO_ITEMS -> Icons.Default.Category
+        EmptyStateType.NO_ITEMS -> Icons.Default.Receipt
         EmptyStateType.NO_ORDERS -> Icons.Default.ShoppingCart
-        EmptyStateType.NO_MEMBERS -> Icons.Default.People
-        EmptyStateType.NO_PRODUCTS -> Icons.Default.Description
-        EmptyStateType.CUSTOM -> Icons.Default.Inbox
+        EmptyStateType.NO_MEMBERS -> Icons.Default.Person
+        EmptyStateType.NO_PRODUCTS -> Icons.Default.Storefront
+        EmptyStateType.CUSTOM -> Icons.Default.FolderOpen
     }
 
     Column(
@@ -129,7 +129,7 @@ fun EmptyState(
 fun CompactEmptyState(
     message: String,
     modifier: Modifier = Modifier,
-    icon: ImageVector = Icons.Default.Inbox
+    icon: ImageVector = Icons.Default.FolderOpen
 ) {
     Column(
         modifier = modifier

@@ -1,7 +1,7 @@
 # Claude Code Development Guide - Dynapharm Owner Hub
 
-**Version:** 1.0
-**Last Updated:** 2026-02-09
+**Version:** 1.1
+**Last Updated:** 2026-02-10
 **App:** Dynapharm Owner Hub (Android)
 **Package:** com.dynapharm.ownerhub
 
@@ -30,10 +30,68 @@ This document provides AI development patterns and instructions for Claude Code 
 - Async: Kotlin Coroutines + Flow
 - Testing: JUnit 5 + MockK + Turbine + Compose UI Test
 
-### Build Variants
-- `debug`: Local dev with emulator (http://dynapharm.peter/)
-- `staging`: Pre-production (https://erp.dynapharmafrica.com/)
-- `release`: Production (https://coulderp.dynapharmafrica.com/)
+### Build Variants & API Configuration
+
+**CRITICAL: Development Environment Pattern**
+
+For local development with WAMP virtual hosts, always use this pattern:
+
+1. **Base URL:** Use host machine's LAN IP address (e.g., `http://192.168.1.5/dms_web/`)
+   - NEVER use `10.0.2.2` or `localhost` - they don't work with WAMP virtual hosts
+   - Find LAN IP: `ipconfig` → Look for IPv4 under Wi-Fi or Ethernet adapter
+
+2. **HostHeaderInterceptor:** Add `Host: dynapharm.peter` header for virtual host routing
+   - Required because WAMP needs correct Host header to route requests
+   - Only active in dev mode (when base URL contains local IP)
+
+3. **Network Security Config:** Allow cleartext (HTTP) for local IPs
+   ```xml
+   <!-- res/xml/network_security_config.xml -->
+   <network-security-config>
+       <domain-config cleartextTrafficPermitted="true">
+           <domain includeSubdomains="true">192.168.1.5</domain>
+       </domain-config>
+   </network-security-config>
+
+   <!-- AndroidManifest.xml -->
+   <application android:networkSecurityConfig="@xml/network_security_config">
+   ```
+
+4. **Implementation:**
+   ```kotlin
+   // build.gradle.kts (dev flavor)
+   buildConfigField("String", "API_BASE_URL", "\"http://192.168.1.5/dms_web/\"")
+
+   // HostHeaderInterceptor.kt
+   if (BuildConfig.API_BASE_URL.contains("192.168.")) {
+       request.newBuilder().header("Host", "dynapharm.peter").build()
+   }
+
+   // NetworkModule.kt
+   OkHttpClient.Builder()
+       .addInterceptor(hostHeaderInterceptor)  // MUST be first
+       .addInterceptor(authInterceptor)
+       // ... other interceptors
+   ```
+
+**Build Variants:**
+- `dev`: Local WAMP server
+  - API: `http://192.168.1.5/dms_web/` (LAN IP + project path)
+  - Host Header: `dynapharm.peter` (virtual host name)
+  - Logging: Enabled
+  - Cert Pinning: Disabled
+
+- `staging`: Pre-production server
+  - API: `https://erp.dynapharmafrica.com/`
+  - No Host header needed (real domain)
+  - Logging: Enabled
+  - Cert Pinning: Enabled
+
+- `prod`: Production server
+  - API: `https://clouderp.dynapharmafrica.com/`
+  - No Host header needed (real domain)
+  - Logging: Disabled
+  - Cert Pinning: Enabled
 
 ---
 
@@ -233,6 +291,162 @@ override fun getDashboardKpis(
 3. **Stable collections**: Wrap lists in `persistentListOf()` or use `@Immutable`
 4. **Avoid side effects in composition**: Use `LaunchedEffect`, `SideEffect`, `DisposableEffect`
 5. **Material 3 components**: Always use M3 variants (not M2)
+   - **CRITICAL**: This project uses Material 3 (androidx.compose.material3)
+   - NEVER use Material 2 (androidx.compose.material) components except for pull-refresh
+   - Material 3 APIs can differ between versions - follow patterns below
+
+6. **Error Dialog Pattern (SweetAlert-style)**:
+   ```kotlin
+   // Show errors with Material 3 AlertDialog instead of Snackbar
+   AlertDialog(
+       onDismissRequest = { showError = false },
+       icon = {
+           Icon(
+               imageVector = Icons.Filled.Error,
+               contentDescription = "Error",
+               tint = MaterialTheme.colorScheme.error,
+               modifier = Modifier.size(64.dp)
+           )
+       },
+       title = {
+           Text(
+               text = "Operation Failed",
+               style = MaterialTheme.typography.headlineSmall,
+               fontWeight = FontWeight.Bold
+           )
+       },
+       text = {
+           Text(
+               text = errorMessage,
+               style = MaterialTheme.typography.bodyLarge,
+               textAlign = TextAlign.Center
+           )
+       },
+       confirmButton = {
+           Button(onClick = { showError = false }, modifier = Modifier.fillMaxWidth()) {
+               Text("OK")
+           }
+       },
+       containerColor = MaterialTheme.colorScheme.surface,
+       tonalElevation = 6.dp
+   )
+   ```
+
+7. **Logout Pattern**: Always visible in TopAppBar
+   ```kotlin
+   @OptIn(ExperimentalMaterial3Api::class)
+   TopAppBar(
+       title = { Text("App Name") },
+       actions = {
+           IconButton(onClick = { viewModel.logout(); onLogout() }) {
+               Icon(Icons.Default.Logout, "Logout")
+           }
+       }
+   )
+   ```
+
+### Material 3 Compatibility Guidelines
+
+**Version:** Material 3 1.3.x (via compose-bom 2024.12.01)
+
+1. **ExposedDropdownMenuBox Pattern** (CRITICAL):
+   ```kotlin
+   @OptIn(ExperimentalMaterial3Api::class)
+   @Composable
+   fun MySelector() {
+       ExposedDropdownMenuBox(
+           expanded = expanded,
+           onExpandedChange = { expanded = it }
+       ) {
+           OutlinedTextField(
+               // ...
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .menuAnchor()  // NO PARAMETERS - MenuAnchorType removed
+           )
+           ExposedDropdownMenu(...) { /* items */ }
+       }
+   }
+   ```
+   - **DO NOT** use `MenuAnchorType` parameter (removed in newer M3 versions)
+   - Use `.menuAnchor()` without parameters
+
+2. **Confirmed Working Icons** (material-icons-extended:1.7.6):
+   ```kotlin
+   // Confirmed available in Icons.Default:
+   Icons.Default.Store          // Franchise/business icon
+   Icons.Default.Check          // Checkmark/selection
+   Icons.Default.SwapHoriz      // Swap/switch action
+   Icons.Default.Visibility     // Show password
+   Icons.Default.VisibilityOff  // Hide password
+   Icons.Default.AccountBalance // Finance/banking
+   Icons.Default.Assessment     // Reports/analytics
+   Icons.Default.CheckCircle    // Approvals
+   ```
+   - ONLY use icons from the confirmed list above
+   - If you need a new icon, test it first or ask user for confirmation
+
+3. **AlertDialog Pattern**:
+   ```kotlin
+   AlertDialog(
+       onDismissRequest = { /* dismiss logic */ },
+       title = { Text("Title") },
+       text = { /* content */ },
+       confirmButton = {
+           TextButton(onClick = { /* action */ }) { Text("OK") }
+       },
+       dismissButton = {
+           TextButton(onClick = { /* dismiss */ }) { Text("Cancel") }
+       }
+   )
+   ```
+
+4. **Card Pattern**:
+   ```kotlin
+   Card(
+       modifier = Modifier.fillMaxWidth(),
+       colors = CardDefaults.cardColors(
+           containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+           contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+       ),
+       elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+   ) { /* content */ }
+   ```
+
+5. **Color Scheme Usage**:
+   ```kotlin
+   // Primary colors
+   MaterialTheme.colorScheme.primary
+   MaterialTheme.colorScheme.onPrimary
+
+   // Tertiary (subtle highlights - used for franchise banner)
+   MaterialTheme.colorScheme.tertiaryContainer
+   MaterialTheme.colorScheme.onTertiaryContainer
+
+   // Error colors
+   MaterialTheme.colorScheme.error
+   MaterialTheme.colorScheme.onError
+   ```
+
+6. **TextField Pattern**:
+   ```kotlin
+   OutlinedTextField(
+       value = value,
+       onValueChange = onValueChange,
+       label = { Text("Label") },
+       leadingIcon = { Icon(Icons.Default.Store, contentDescription = null) },
+       trailingIcon = { /* optional */ },
+       colors = OutlinedTextFieldDefaults.colors(), // Use defaults
+       modifier = Modifier.fillMaxWidth()
+   )
+   ```
+
+**Common M3 Migration Pitfalls:**
+- ❌ `MenuAnchorType.PrimaryNotEditable` → ✅ Remove parameter entirely
+- ❌ `MaterialTheme.colors` (M2) → ✅ `MaterialTheme.colorScheme` (M3)
+- ❌ `backgroundColor` → ✅ `containerColor`
+- ❌ `contentColor` → ✅ `contentColor` (unchanged)
+- ❌ `Icons.Filled.*` for extended icons → ✅ `Icons.Default.*`
 
 ### Hilt Dependency Injection
 
@@ -513,6 +727,10 @@ presentation/
 8. **Don't create mutable domain models**: Domain models should be immutable data classes
 9. **Don't use `!!` operator**: Use safe calls (`?.`) or `?:` with fallback
 10. **Don't test implementation details**: Test behavior, not private methods
+11. **DON'T use `10.0.2.2` or `localhost` for WAMP development**:
+    - ❌ WRONG: `http://10.0.2.2/` or `http://localhost/`
+    - ✅ CORRECT: Use LAN IP + HostHeaderInterceptor pattern (see Build Variants section)
+    - Emulators need real network access to WAMP virtual hosts
 
 ---
 

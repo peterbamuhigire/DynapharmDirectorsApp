@@ -2,15 +2,15 @@ package com.dynapharm.owner.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Primary Colors - Dynapharm Green
-val DynapharmGreen = Color(0xFF2E7D32)
-val DynapharmGreenLight = Color(0xFF60AD5E)
-val DynapharmGreenDark = Color(0xFF005005)
+// Primary Colors - Dynapharm Deep Red (Brand Colors)
+val DynapharmRed = Color(0xFFC41E3A)        // Deep red (easy on eyes)
+val DynapharmRedLight = Color(0xFFE57373)   // Soft rose red
+val DynapharmRedDark = Color(0xFF8B1538)    // Wine red
 
-// Secondary Colors - Complementary Accent
-val DynapharmGold = Color(0xFFFFA000)
-val DynapharmGoldLight = Color(0xFFFFD149)
-val DynapharmGoldDark = Color(0xFFC67100)
+// Secondary Colors - Warm Complement
+val DynapharmGold = Color(0xFFD4AF37)       // Softer gold
+val DynapharmGoldLight = Color(0xFFFFE082)  // Pale gold
+val DynapharmGoldDark = Color(0xFFA68B2C)   // Deep gold
 
 // Tertiary Colors
 val DynapharmBlue = Color(0xFF1976D2)
@@ -51,10 +51,10 @@ val InfoLight = Color(0xFF64B5F6)
 val InfoDark = Color(0xFF1976D2)
 
 // Light Theme Colors
-val LightPrimary = DynapharmGreen
+val LightPrimary = DynapharmRed
 val LightOnPrimary = Color.White
-val LightPrimaryContainer = DynapharmGreenLight
-val LightOnPrimaryContainer = DynapharmGreenDark
+val LightPrimaryContainer = DynapharmRedLight
+val LightOnPrimaryContainer = DynapharmRedDark
 
 val LightSecondary = DynapharmGold
 val LightOnSecondary = Color.White
@@ -81,9 +81,9 @@ val LightOutline = Neutral60
 val LightOutlineVariant = Neutral80
 
 // Dark Theme Colors
-val DarkPrimary = DynapharmGreenLight
-val DarkOnPrimary = DynapharmGreenDark
-val DarkPrimaryContainer = DynapharmGreen
+val DarkPrimary = DynapharmRedLight
+val DarkOnPrimary = DynapharmRedDark
+val DarkPrimaryContainer = DynapharmRed
 val DarkOnPrimaryContainer = Color.White
 
 val DarkSecondary = DynapharmGoldLight

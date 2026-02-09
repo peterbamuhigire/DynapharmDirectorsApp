@@ -1,51 +1,50 @@
 package com.dynapharm.owner.data.remote.interceptor
 
+import com.dynapharm.owner.BuildConfig
+import com.dynapharm.owner.data.local.prefs.FranchiseManager
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 /**
- * OkHttp Interceptor that adds the X-Franchise-ID header to all requests.
- * This header identifies which franchise the request is being made for.
+ * OkHttp Interceptor that adds context headers to all requests.
+ * Includes franchise ID, app version, and platform information.
  *
- * Currently uses a hardcoded franchise ID of 1.
- * TODO: Make this dynamic based on user's selected franchise from preferences/database.
+ * Headers added:
+ * - X-Franchise-ID: Current franchise context (if selected)
+ * - X-App-Version: App version from BuildConfig
+ * - X-Platform: Always "android"
+ *
+ * Dynamically retrieves the franchise ID from FranchiseManager.
+ * If no franchise is selected (e.g., during login), only version/platform headers are added.
  *
  * Usage: Add this interceptor to OkHttpClient in the network module.
  */
-class FranchiseContextInterceptor @Inject constructor() : Interceptor {
+class FranchiseContextInterceptor @Inject constructor(
+    private val franchiseManager: FranchiseManager
+) : Interceptor {
 
     private companion object {
         const val HEADER_FRANCHISE_ID = "X-Franchise-ID"
-
-        // TODO: Replace with dynamic franchise ID from user preferences/session
-        // This will be updated once we have:
-        // 1. User authentication flow complete
-        // 2. Franchise selection mechanism
-        // 3. Franchise data stored in local database/preferences
-        const val DEFAULT_FRANCHISE_ID = "1"
+        const val HEADER_APP_VERSION = "X-App-Version"
+        const val HEADER_PLATFORM = "X-Platform"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
+        val requestBuilder = originalRequest.newBuilder()
 
-        // Add the franchise ID header to the request
-        val requestWithFranchiseId = originalRequest.newBuilder()
-            .header(HEADER_FRANCHISE_ID, DEFAULT_FRANCHISE_ID)
-            .build()
+        // Always add app version and platform
+        requestBuilder
+            .header(HEADER_APP_VERSION, BuildConfig.VERSION_NAME)
+            .header(HEADER_PLATFORM, "android")
 
-        return chain.proceed(requestWithFranchiseId)
+        // Add franchise ID if available (allows login endpoint to work without it)
+        val franchiseId = franchiseManager.getActiveFranchiseIdString()
+        if (franchiseId != null) {
+            requestBuilder.header(HEADER_FRANCHISE_ID, franchiseId)
+        }
+
+        return chain.proceed(requestBuilder.build())
     }
-
-    /**
-     * Updates the franchise ID for subsequent requests.
-     * This method will be called when the user switches franchises.
-     *
-     * Note: Currently not implemented as we're using a constant.
-     * Will be implemented in a future update when we add multi-franchise support.
-     */
-    // TODO: Implement dynamic franchise switching
-    // fun setFranchiseId(franchiseId: String) {
-    //     // Store in preferences or in-memory cache
-    // }
 }

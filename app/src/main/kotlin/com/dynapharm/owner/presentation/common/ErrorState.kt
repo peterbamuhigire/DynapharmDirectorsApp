@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
-import androidx.compose.material.icons.filled.WifiOff
+import androidx.compose.material.icons.filled.SignalWifiOff
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -56,7 +56,7 @@ fun ErrorState(
     icon: ImageVector? = null
 ) {
     val displayIcon = icon ?: when (errorType) {
-        ErrorType.NETWORK -> Icons.Default.WifiOff
+        ErrorType.NETWORK -> Icons.Default.SignalWifiOff
         ErrorType.SERVER -> Icons.Default.Warning
         ErrorType.UNAUTHORIZED -> Icons.Default.Error
         ErrorType.GENERIC -> Icons.Default.Error

@@ -30,7 +30,7 @@ android {
         }
 
         // Defaults overridden per flavor
-        buildConfigField("String", "APP_NAME", "\"DynapharmOwner\"")
+        buildConfigField("String", "APP_NAME", "\"Dyna Director\"")
         buildConfigField("Boolean", "ENABLE_LOGGING", "true")
         buildConfigField("String", "CERTIFICATE_PINS", "\"\"")
     }
@@ -60,11 +60,12 @@ android {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
 
+            // Use 10.0.2.2 (emulator's special alias for host machine)
             buildConfigField(
                 "String", "API_BASE_URL",
-                "\"http://dynapharm.peter/\""
+                "\"http://10.0.2.2/dms_web/\""
             )
-            buildConfigField("String", "APP_NAME", "\"DynapharmOwner DEV\"")
+            buildConfigField("String", "APP_NAME", "\"Dyna Director\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "true")
             buildConfigField("String", "CERTIFICATE_PINS", "\"\"")
 
@@ -81,7 +82,7 @@ android {
                 "String", "API_BASE_URL",
                 "\"https://erp.dynapharmafrica.com/\""
             )
-            buildConfigField("String", "APP_NAME", "\"DynapharmOwner STG\"")
+            buildConfigField("String", "APP_NAME", "\"Dyna Director\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "true")
             buildConfigField(
                 "String", "CERTIFICATE_PINS",
@@ -98,7 +99,7 @@ android {
                 "String", "API_BASE_URL",
                 "\"https://coulderp.dynapharmafrica.com/\""
             )
-            buildConfigField("String", "APP_NAME", "\"DynapharmOwner\"")
+            buildConfigField("String", "APP_NAME", "\"Dyna Director\"")
             buildConfigField("Boolean", "ENABLE_LOGGING", "false")
             buildConfigField(
                 "String", "CERTIFICATE_PINS",
@@ -165,6 +166,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation("androidx.compose.material:material:1.7.6") // For pull-to-refresh
+    implementation("androidx.compose.material:material-icons-extended:1.7.6") // Extended Material Icons
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
 

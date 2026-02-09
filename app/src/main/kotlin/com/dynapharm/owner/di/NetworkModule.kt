@@ -87,6 +87,7 @@ object NetworkModule {
     /**
      * Provides configured OkHttpClient.
      * Includes authentication, franchise context, token refresh, and logging.
+     * NOTE: HostHeaderInterceptor NOT used - WAMP vhost 'dynapharm.peter' doesn't have dms_web directory
      */
     @Provides
     @Singleton

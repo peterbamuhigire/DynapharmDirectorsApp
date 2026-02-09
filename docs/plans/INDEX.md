@@ -1,6 +1,6 @@
 # Implementation Plans Index
 
-**Last Updated**: 2026-02-09
+**Last Updated**: 2026-02-10
 
 ---
 
@@ -8,7 +8,7 @@
 
 | Plan | Status | Priority | Estimated Duration | Start Date |
 |------|--------|----------|-------------------|------------|
-| [Phase 1: Login + Dashboard + Empty Tabs](phase-1-implementation.md) | Ready to Execute | P0 - Critical | 4 weeks | Not Started |
+| [Phase 1: Login + Dashboard + Real Data](phase-1-implementation.md) | In Progress | P0 - Critical | 4 weeks | 2026-02-10 |
 
 ---
 
@@ -49,7 +49,9 @@ See [phase-1-implementation.md](phase-1-implementation.md) for detailed executio
 
 ## Completed Plans
 
-*None yet*
+| Plan | Completion Date | Duration | Summary |
+|------|----------------|----------|---------|
+| [Authentication & Login Flow](2026-02-10-authentication-completion.md) | 2026-02-10 | 1 day | Real database authentication with username/email login, SweetAlert-style error dialogs, logout in TopAppBar, backend schema update (franchise_id nullable) |
 
 ---
 

@@ -1,6 +1,5 @@
 package com.dynapharm.owner.presentation.screens.auth
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,25 +12,30 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -54,8 +58,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import com.dynapharm.owner.BuildConfig
 import com.dynapharm.owner.R
+import com.dynapharm.owner.domain.model.Franchise
+import com.dynapharm.owner.presentation.common.FranchiseSelector
 
 /**
  * Login screen composable.
@@ -75,21 +84,42 @@ fun LoginScreen(
     var username by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var rememberMe by rememberSaveable { mutableStateOf(false) }
+    var showFranchiseSelector by remember { mutableStateOf(false) }
+    var franchises by remember { mutableStateOf<List<Franchise>>(emptyList()) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     // Handle success state
     LaunchedEffect(uiState) {
         if (uiState is LoginUiState.Success) {
-            onLoginSuccess()
-            viewModel.resetState()
+            val userFranchises = viewModel.getUserFranchises()
+            franchises = userFranchises
+
+            when {
+                userFranchises.isEmpty() -> {
+                    snackbarHostState.showSnackbar(
+                        message = "No franchises available. Contact support.",
+                        duration = SnackbarDuration.Long
+                    )
+                }
+                userFranchises.size == 1 -> {
+                    // Auto-selected in repository, navigate directly
+                    onLoginSuccess()
+                    viewModel.resetState()
+                }
+                else -> {
+                    // Show franchise selector
+                    showFranchiseSelector = true
+                }
+            }
         }
     }
 
     // Handle error state
     LaunchedEffect(uiState) {
         if (uiState is LoginUiState.Error) {
-            snackbarHostState.showSnackbar(
-                message = (uiState as LoginUiState.Error).message
-            )
+            errorMessage = (uiState as LoginUiState.Error).message
+            showErrorDialog = true
             viewModel.clearError()
         }
     }
@@ -107,6 +137,78 @@ fun LoginScreen(
             onRememberMeChange = { rememberMe = it },
             onLoginClick = { viewModel.login(username, password) },
             modifier = Modifier.padding(paddingValues)
+        )
+    }
+
+    // Franchise selector dialog
+    if (showFranchiseSelector && franchises.isNotEmpty()) {
+        AlertDialog(
+            onDismissRequest = { /* Cannot dismiss - must select franchise */ },
+            title = { Text("Select Franchise") },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = "Please select a franchise to continue",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+
+                    FranchiseSelector(
+                        franchises = franchises,
+                        selectedFranchise = null,
+                        onFranchiseSelected = { franchise ->
+                            viewModel.setActiveFranchise(franchise)
+                            showFranchiseSelector = false
+                            onLoginSuccess()
+                            viewModel.resetState()
+                        }
+                    )
+                }
+            },
+            confirmButton = {}
+        )
+    }
+
+    // Error dialog (SweetAlert style)
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            icon = {
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "Error",
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(64.dp)
+                )
+            },
+            title = {
+                Text(
+                    text = "Login Failed",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text(
+                    text = errorMessage,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showErrorDialog = false },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("OK")
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            tonalElevation = 6.dp
         )
     }
 }
@@ -130,37 +232,46 @@ private fun LoginContent(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .imePadding()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            // Logo placeholder
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 500.dp)  // Max 500dp for landscape/tablets
+                    .fillMaxWidth(0.9f)  // Then take 90% of constrained width
+                    .verticalScroll(rememberScrollState())
+                    .imePadding()
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(0.dp)
+            ) {
+                // Add top spacer for vertical centering
+                Spacer(modifier = Modifier.weight(1f))
+
+            // Dynapharm Logo from server
             Box(
                 modifier = Modifier
-                    .size(120.dp)
-                    .padding(bottom = 32.dp),
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
                 contentAlignment = Alignment.Center
             ) {
-                // TODO: Replace with actual Dynapharm logo
-                Icon(
-                    painter = painterResource(id = android.R.drawable.ic_dialog_info),
+                AsyncImage(
+                    model = "${BuildConfig.API_BASE_URL}dist/img/icons/DynaLogo.png",
                     contentDescription = "Dynapharm Logo",
-                    modifier = Modifier.size(80.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    modifier = Modifier
+                        .size(width = 200.dp, height = 120.dp),
+                    onError = { /* Fallback to text logo if image fails */ },
+                    placeholder = painterResource(id = android.R.drawable.ic_dialog_info)
                 )
             }
 
-            // Title
+            // Subtitle
             Text(
-                text = "Dynapharm Owner Hub",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                text = "Director's Portal",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.primary,  // Deep red
                 textAlign = TextAlign.Center
             )
 
@@ -296,6 +407,10 @@ private fun LoginContent(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center
             )
+
+                // Add bottom spacer for vertical centering
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
     }
 }

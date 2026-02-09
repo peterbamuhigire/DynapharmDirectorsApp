@@ -15,49 +15,33 @@ class AuthInterceptor @Inject constructor(
     private val tokenManager: TokenManager
 ) : Interceptor {
 
-    private companion object {
-        // Endpoints that don't require authentication
-        val SKIP_AUTH_ENDPOINTS = setOf(
-            "/api/v1/auth/login",
-            "/api/v1/auth/refresh",
-            "/api/v1/auth/register",
-            "/api/v1/auth/forgot-password",
-            "/api/v1/auth/reset-password"
-        )
-    }
-
     override fun intercept(chain: Interceptor.Chain): Response {
-        val originalRequest = chain.request()
-        val requestPath = originalRequest.url.encodedPath
+        val request = chain.request()
+        val path = request.url.encodedPath
 
         // Skip adding Authorization header for public endpoints
-        if (shouldSkipAuth(requestPath)) {
-            return chain.proceed(originalRequest)
+        // Use contains() to match paths like /api/auth/mobile-login.php
+        if (path.contains("mobile-login") ||
+            path.contains("mobile-refresh") ||
+            path.contains("register") ||
+            path.contains("forgot-password") ||
+            path.contains("reset-password")) {
+            return chain.proceed(request)
         }
 
         // Get the access token
-        val accessToken = tokenManager.getAccessToken()
+        val token = tokenManager.getAccessToken()
 
-        // If no token is available, proceed without Authorization header
-        // (API will return 401, which will be handled by TokenRefreshAuthenticator)
-        if (accessToken.isNullOrBlank()) {
-            return chain.proceed(originalRequest)
-        }
-
-        // Add Authorization header with Bearer token
-        val authenticatedRequest = originalRequest.newBuilder()
-            .header("Authorization", "Bearer $accessToken")
-            .build()
-
-        return chain.proceed(authenticatedRequest)
-    }
-
-    /**
-     * Checks if the request path matches any of the endpoints that don't need auth.
-     */
-    private fun shouldSkipAuth(path: String): Boolean {
-        return SKIP_AUTH_ENDPOINTS.any { endpoint ->
-            path.endsWith(endpoint)
+        // If no token available, proceed without auth
+        return if (token != null && token.isNotBlank()) {
+            chain.proceed(
+                request.newBuilder()
+                    .header("Authorization", "Bearer $token")
+                    .header("Accept", "application/json")
+                    .build()
+            )
+        } else {
+            chain.proceed(request)
         }
     }
 }

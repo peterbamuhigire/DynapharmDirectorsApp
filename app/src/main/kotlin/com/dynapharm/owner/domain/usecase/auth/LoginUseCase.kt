@@ -37,14 +37,14 @@ class LoginUseCase @Inject constructor(
         // Perform login
         return when (val loginResult = authRepository.login(username, password)) {
             is Result.Success -> {
-                // Get the current user after successful login
+                // Get current user from repository (already cached during login)
                 val user = authRepository.getCurrentUser()
                 if (user != null) {
                     Result.Success(user)
                 } else {
                     Result.Error(
-                        Exception("Failed to retrieve user information"),
-                        "Login succeeded but user data is unavailable"
+                        Exception("User data not available after login"),
+                        "Login succeeded but user information is missing"
                     )
                 }
             }

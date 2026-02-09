@@ -154,10 +154,12 @@ The app uses JWT (JSON Web Token) authentication with a two-token system:
 **Request:**
 ```json
 {
-  "email": "owner@dynapharm.com",
+  "email": "owner@dynapharm.com",  // OR "username": "john.kamau"
   "password": "SecurePassword123!"
 }
 ```
+
+**Note:** The endpoint accepts **either** `email` OR `username` field. Backend queries both `email` and `username` columns, allowing flexible authentication.
 
 **Response:**
 ```json

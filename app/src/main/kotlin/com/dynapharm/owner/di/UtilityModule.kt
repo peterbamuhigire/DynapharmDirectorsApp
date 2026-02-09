@@ -1,6 +1,7 @@
 package com.dynapharm.owner.di
 
 import android.content.Context
+import com.dynapharm.owner.data.local.prefs.FranchiseManager
 import com.dynapharm.owner.util.NetworkMonitor
 import dagger.Module
 import dagger.Provides
@@ -14,24 +15,12 @@ import javax.inject.Singleton
 
 /**
  * Hilt module providing utility dependencies.
- * Includes JSON configuration, coroutine dispatchers, and network monitoring.
+ * Includes coroutine dispatchers and network monitoring.
+ * Note: Json configuration is provided by NetworkModule.
  */
 @Module
 @InstallIn(SingletonComponent::class)
 object UtilityModule {
-
-    /**
-     * Provides JSON configuration for kotlinx.serialization.
-     * Configured to be lenient and ignore unknown keys.
-     */
-    @Provides
-    @Singleton
-    fun provideJson(): Json = Json {
-        ignoreUnknownKeys = true
-        isLenient = true
-        coerceInputValues = true
-        encodeDefaults = true
-    }
 
     /**
      * Provides IO Dispatcher for IO-bound operations.
@@ -59,4 +48,15 @@ object UtilityModule {
     fun provideNetworkMonitor(
         @ApplicationContext context: Context
     ): NetworkMonitor = NetworkMonitor(context)
+
+    /**
+     * Provides FranchiseManager for managing active franchise selection.
+     * Uses EncryptedSharedPreferences for secure storage.
+     */
+    @Provides
+    @Singleton
+    fun provideFranchiseManager(
+        @ApplicationContext context: Context,
+        json: Json
+    ): FranchiseManager = FranchiseManager(context, json)
 }

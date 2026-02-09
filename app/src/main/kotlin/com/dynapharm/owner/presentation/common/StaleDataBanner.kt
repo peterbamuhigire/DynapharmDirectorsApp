@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.WifiOff
+import androidx.compose.material.icons.filled.SignalWifiOff
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -60,9 +60,9 @@ fun StaleDataBanner(
     showRefreshButton: Boolean = true
 ) {
     val displayIcon = icon ?: when (bannerType) {
-        StaleBannerType.OFFLINE -> Icons.Default.WifiOff
+        StaleBannerType.OFFLINE -> Icons.Default.SignalWifiOff
         StaleBannerType.STALE_DATA -> Icons.Default.Warning
-        StaleBannerType.SYNC_FAILED -> Icons.Default.CloudOff
+        StaleBannerType.SYNC_FAILED -> Icons.Default.Cloud
         StaleBannerType.CUSTOM -> Icons.Default.Warning
     }
 
@@ -195,9 +195,9 @@ fun StaleDataBannerWithAction(
     bannerType: StaleBannerType = StaleBannerType.STALE_DATA
 ) {
     val displayIcon = when (bannerType) {
-        StaleBannerType.OFFLINE -> Icons.Default.WifiOff
+        StaleBannerType.OFFLINE -> Icons.Default.SignalWifiOff
         StaleBannerType.STALE_DATA -> Icons.Default.Warning
-        StaleBannerType.SYNC_FAILED -> Icons.Default.CloudOff
+        StaleBannerType.SYNC_FAILED -> Icons.Default.Cloud
         StaleBannerType.CUSTOM -> Icons.Default.Warning
     }
 

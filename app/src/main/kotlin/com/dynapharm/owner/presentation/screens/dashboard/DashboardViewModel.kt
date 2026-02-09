@@ -2,6 +2,8 @@ package com.dynapharm.owner.presentation.screens.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dynapharm.owner.data.local.prefs.FranchiseManager
+import com.dynapharm.owner.domain.model.Franchise
 import com.dynapharm.owner.domain.model.Result
 import com.dynapharm.owner.domain.usecase.dashboard.GetDashboardStatsUseCase
 import com.dynapharm.owner.domain.usecase.dashboard.RefreshDashboardUseCase
@@ -9,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val getDashboardStatsUseCase: GetDashboardStatsUseCase,
-    private val refreshDashboardUseCase: RefreshDashboardUseCase
+    private val refreshDashboardUseCase: RefreshDashboardUseCase,
+    private val franchiseManager: FranchiseManager
 ) : ViewModel() {
 
     companion object {
@@ -31,8 +36,27 @@ class DashboardViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(DashboardUiState())
     val uiState: StateFlow<DashboardUiState> = _uiState.asStateFlow()
 
+    // Expose active franchise for UI
+    val activeFranchise: StateFlow<Franchise?> = franchiseManager.activeFranchise
+
     init {
+        observeFranchiseChanges()
         loadDashboardStats()
+    }
+
+    /**
+     * Observes franchise changes and reloads dashboard when franchise switches.
+     * This ensures dashboard data is always for the currently selected franchise.
+     */
+    private fun observeFranchiseChanges() {
+        viewModelScope.launch {
+            franchiseManager.activeFranchise
+                .filterNotNull()
+                .collectLatest { franchise ->
+                    // Franchise changed - reload dashboard
+                    loadDashboardStats()
+                }
+        }
     }
 
     /**
@@ -151,5 +175,21 @@ class DashboardViewModel @Inject constructor(
      */
     private fun isDataStale(timestamp: Long): Boolean {
         return System.currentTimeMillis() - timestamp > CACHE_STALE_THRESHOLD_MILLIS
+    }
+
+    /**
+     * Gets all cached franchises for franchise selector.
+     * @return List of franchises
+     */
+    fun getAllFranchises(): List<Franchise> {
+        return franchiseManager.getAllFranchises()
+    }
+
+    /**
+     * Sets the active franchise and triggers data reload.
+     * @param franchise The franchise to activate
+     */
+    fun setActiveFranchise(franchise: Franchise) {
+        franchiseManager.setActiveFranchise(franchise)
     }
 }

@@ -2,7 +2,7 @@ package com.dynapharm.owner.presentation.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalance
-import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Assessment
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 /**
  * Bottom navigation bar for the main app screens.
@@ -28,7 +29,7 @@ fun BottomNavigationBar(
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        tonalElevation = androidx.compose.ui.unit.dp(3f)
+        tonalElevation = 3.dp
     ) {
         bottomNavItems.forEach { item ->
             NavigationBarItem(
@@ -67,7 +68,7 @@ private val bottomNavItems = listOf(
     BottomNavItem(
         route = Screen.Reports.route,
         label = "Reports",
-        icon = Icons.Default.BarChart
+        icon = Icons.Default.Assessment
     ),
     BottomNavItem(
         route = Screen.Finance.route,

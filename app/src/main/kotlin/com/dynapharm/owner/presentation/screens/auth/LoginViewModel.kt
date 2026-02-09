@@ -2,7 +2,10 @@ package com.dynapharm.owner.presentation.screens.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dynapharm.owner.data.local.prefs.FranchiseManager
+import com.dynapharm.owner.domain.model.Franchise
 import com.dynapharm.owner.domain.model.Result
+import com.dynapharm.owner.domain.repository.AuthRepository
 import com.dynapharm.owner.domain.usecase.auth.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +20,9 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val authRepository: AuthRepository,
+    private val franchiseManager: FranchiseManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
@@ -61,6 +66,33 @@ class LoginViewModel @Inject constructor(
      * Resets the UI state to idle.
      */
     fun resetState() {
+        _uiState.value = LoginUiState.Idle
+    }
+
+    /**
+     * Gets the list of franchises available to the current user.
+     * Suspend function to avoid blocking the main thread.
+     *
+     * @return List of franchises from repository
+     */
+    suspend fun getUserFranchises(): List<Franchise> {
+        return authRepository.getUserFranchises()
+    }
+
+    /**
+     * Sets the active franchise for the current session.
+     * @param franchise The franchise to activate
+     */
+    fun setActiveFranchise(franchise: Franchise) {
+        franchiseManager.setActiveFranchise(franchise)
+    }
+
+    /**
+     * Logs out the current user and clears all session data.
+     */
+    suspend fun logout() {
+        authRepository.logout()
+        franchiseManager.clearAll()
         _uiState.value = LoginUiState.Idle
     }
 }
